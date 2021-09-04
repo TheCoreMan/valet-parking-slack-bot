@@ -13,7 +13,11 @@ RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 
 # Run the server.
-COPY . /app/
+COPY src/ /app/
 EXPOSE 5000
-ENV FLASK_APP=valet_parking_slack_bot.server
-CMD ["flask", "run"]
+ENV FLASK_APP="valet_parking_slack_bot.server.py"
+
+CMD [ \
+	"flask", "run", \
+	"--host=0.0.0.0" \
+    ]
