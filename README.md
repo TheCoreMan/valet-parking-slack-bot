@@ -33,6 +33,14 @@ ENV FLASK_APP="valet_parking_slack_bot.server.py"
 flask run
 ```
 
+## Running Tests
+
+To run the tests, simply use pytest!
+
+```sh
+pytest .
+```
+
 ## Dockerizing
 
 ### Building a Docker image
