@@ -1,5 +1,6 @@
 # Base image. This version is in the pyproject file as well.
-FROM python:3.9
+# See Image Variants on https://hub.docker.com/_/python
+FROM python:3.9-slim
 
 # Install various system dependencies.
 RUN pip install "poetry==1.1.8"
