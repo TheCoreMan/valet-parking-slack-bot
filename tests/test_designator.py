@@ -1,12 +1,12 @@
 from valet_parking_slack_bot.logic import ParkingSpotDesignator
-from valet_parking_slack_bot.repo import ParkingSpotRepo
+from valet_parking_slack_bot.repo import ParkingSpotRepoBase
 from unittest.mock import MagicMock, create_autospec
 
 test_username = "test_user"
 
 def test_reserve_spot_sanity():
     # arrange (given)
-    repo = create_autospec(ParkingSpotRepo)
+    repo = create_autospec(ParkingSpotRepoBase)
     repo.retrieve_available_spots.return_value = [1]
     designator = ParkingSpotDesignator(repo)
     
