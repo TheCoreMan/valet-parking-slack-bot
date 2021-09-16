@@ -16,4 +16,4 @@ def test_reserve_spot_sanity():
     # assert (then)
     assert return_value
     repo.retrieve_available_spots.assert_called_once()
-    repo.assign.assert_called_once_with(test_username)
+    repo.assign.assert_called_once_with(test_username, 1)
