@@ -9,6 +9,6 @@ class ParkingSpotDesignator:
         if len(available_spots) == 0:
             return False
         else:
-            self.parking_spot_repo.assign(available_spots[0], username)
+            self.parking_spot_repo.assign(username)
             return True
 
