@@ -17,3 +17,29 @@ def test_reserve_spot_sanity():
     assert return_value
     repo.retrieve_available_spots.assert_called_once()
     repo.assign.assert_called_once_with(test_username, 1)
+
+
+class TestReleaseByUsername:
+    def test_one_reserved_spot(self):
+        repo = create_autospec(ParkingSpotRepoBase)
+        repo.retrieve_spots_by_user.return_value = '1'
+        designator = ParkingSpotDesignator(repo)
+
+        return_value = designator.release_by_username(test_username)
+        assert return_value == "Parking spot 1 has been released successfully"
+
+    def test_no_reserved_spots(self):
+        repo = create_autospec(ParkingSpotRepoBase)
+        repo.retrieve_spots_by_user.return_value = ''
+        designator = ParkingSpotDesignator(repo)
+
+        return_value = designator.release_by_username(test_username)
+        assert return_value == "User had no assigned parking"
+
+    def test_two_reserved_spots(self):
+        repo = create_autospec(ParkingSpotRepoBase)
+        repo.retrieve_spots_by_user.return_value = '1 2'
+        designator = ParkingSpotDesignator(repo)
+
+        return_value = designator.release_by_username(test_username)
+        assert return_value == "You have several reserved spots: 1 2. Which one to release?"
