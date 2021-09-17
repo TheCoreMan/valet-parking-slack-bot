@@ -1,0 +1,13 @@
+############################# English ############################
+[en]
+languageName = "En"
+title = "ValetBot"
+contentDir = "content/english" # content/english
+weight = 1
+########### footer content ##########
+footer_menu_left = "Information"
+footer_menu_middle = "Product"
+footer_menu_right = "Support"
+footer_content = "Made with 💞 and ☕ by the Nehmads."
+# copyright
+copyright = "**Attributions** | Design By [Themefisher](https://themefisher.com/). Various assets from [undraw.co](https://undraw.co), [unsplash.com](https://unsplash.com/) & [loading.io](https://loading.io/). Icons made by [Freepik](https://www.freepik.com) from [Flaticon](https://www.flaticon.com/)."

@@ -1,0 +1,47 @@
+# main menu
+[[main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[main]]
+name = "Docs"
+url = "docs"
+weight = 2
+
+[[main]]
+name = "Pricing"
+url = "pricing"
+weight = 3
+
+[[main]]
+name = "Contact"
+url = "contact"
+weight = 4
+
+# footer menu left
+[[footer_left]]
+name = "About Us"
+url = "contact"
+
+[[footer_left]]
+name = "Quick Start"
+url = "#"
+
+# footer menu middle
+[[footer_middle]]
+name = "Pricing"
+url = "pricing"
+
+[[footer_middle]]
+name = "Features"
+url = "#"
+
+# footer menu right
+[[footer_right]]
+name = "Privacy Policy"
+url = "privacy-policy"
+
+[[footer_right]]
+name = "FAQ"
+url = "faq"
