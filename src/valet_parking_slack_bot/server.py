@@ -2,16 +2,27 @@ from datetime import datetime
 from flask import Flask
 from flask import request
 from os import environ
+from valet_parking_slack_bot.logic import ParkingSpotDesignator
+from valet_parking_slack_bot.repo import ParkingSpotRepoStub
 
 app = Flask(__name__)
+repo = ParkingSpotRepoStub()
+designator = ParkingSpotDesignator(repo)
+user = 'test_user'
 
+@app.route('/omw', methods=['POST'])
+def omw():
+    #TODO extract 'user' field from payload
+    return designator.try_reserve_spot(user)
 
-@app.route('/spots', methods=['GET', 'POST'])
+@app.route('/release', methods=['POST'])
+def release():
+    #TODO extract 'user' field from payload
+    return designator.release_by_username(user)
+
+@app.route('/spots', methods=['POST'])
 def spots():
-    if request.method == 'POST':
-        return "dedede"
-    else:
-        return check_available_spots()
+    return check_available_spots()
 
 def check_available_spots():
     return "no spots for you!"
