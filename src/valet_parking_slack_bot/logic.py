@@ -3,6 +3,9 @@ class ParkingSpotDesignator:
     def __init__(self, parking_spot_repo) -> None:
         self.parking_spot_repo = parking_spot_repo
 
+    def spots(self):
+        number_of_spots = len(self.parking_spot_repo.retrieve_available_spots())
+        return f"There are {number_of_spots} spots available"
 
     def try_reserve_spot(self, username):
         available_spots = self.parking_spot_repo.retrieve_available_spots()

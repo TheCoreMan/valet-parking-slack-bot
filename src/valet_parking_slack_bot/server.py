@@ -22,10 +22,7 @@ def release():
 
 @app.route('/spots', methods=['POST'])
 def spots():
-    return check_available_spots()
-
-def check_available_spots():
-    return "no spots for you!"
+    return designator.spots()
 
 @app.route('/test/healthcheck', methods=['GET'])
 def healthcheck():
