@@ -10,6 +10,9 @@ summaryLength = "15"
 disqusShortname = "" # get your shortname form here : https://disqus.com
 # google analytics
 googleAnalytics = "" # example : UA-123-45
+
+[params]
+favicon = "favicon.ico"
 # unsafe html
 [markup.goldmark.renderer]
 unsafe = true
