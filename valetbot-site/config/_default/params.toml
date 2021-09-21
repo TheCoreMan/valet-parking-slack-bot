@@ -19,7 +19,8 @@ preloader = "images/preloader.gif" # use jpg, png, svg or gif format.
 # Navigation buttons
 [navigation_button]
 enable = true
-label = "Add the Slack App"
+label = 'Add to Slack'
+icon = '<i class="fab fa-slack"/>'
 link = "#"
 
 # cookies

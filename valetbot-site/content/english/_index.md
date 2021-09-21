@@ -8,6 +8,7 @@ banner:
   button:
     enable : true
     label : "Add the Slack App to your Workspace"
+    icon : '<i class="fab fa-slack"></i>'
     link : "#"
 
 ##################### Feature ##########################
@@ -22,7 +23,7 @@ feature:
       
     # feature item loop
     - name : "Works in Slack"
-      icon : "fas fa-hashtag"
+      icon : "fab fa-slack"
       content : "Your team is already communicating in Slack. Super-charge your `#parking` channel!"
       
     # feature item loop
@@ -72,6 +73,7 @@ You prefer employees to park at the office whenever possible."
       button:
         enable : true
         label : "Utilize my spots better"
+        icon : "<i class='fas fa-tasks'></i>"
         link : "#"
         
     # service item loop
@@ -88,6 +90,7 @@ You prefer employees to park at the office whenever possible."
       button:
         enable : true
         label : "No more Oopsies"
+        icon : "<i class='fas fa-frown'></i>"
         link : "#"
         
     # service item loop
@@ -105,6 +108,7 @@ You prefer employees to park at the office whenever possible."
       button:
         enable : true
         label : "Improve our days"
+        icon : "<i class='fas fa-carrot'></i>"
         link : "#"
             
 ################### Screenshot ########################
@@ -124,6 +128,7 @@ call_to_action:
   It's as simple as that!"
   button:
     enable : true
-    label : "Add the Slack App"
+    label : "Add to Slack"
+    icon : '<i class="fab fa-slack"></i>'
     link : "#"
 ---
