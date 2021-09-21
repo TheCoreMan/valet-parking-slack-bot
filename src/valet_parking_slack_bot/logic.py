@@ -13,7 +13,7 @@ class ParkingSpotDesignator:
             return "There are no spots available"
         else:
             self.parking_spot_repo.assign(username, available_spots[0])
-            return f"Success! You may park at spot {available_spots[0]}"
+            return f"Success, {username}! You may park at spot {available_spots[0]}"
 
     def release_by_username(self, username):
         user_reserved_spots = self.parking_spot_repo.retrieve_spots_by_user(username)
