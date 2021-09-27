@@ -7,7 +7,7 @@ license = "Apache 2"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-slack-bolt = "^1.8.0"
+slack-bolt = "^1.9.1"
 Flask = "^2.0.1"
 requests = "^2.26.0"
 
