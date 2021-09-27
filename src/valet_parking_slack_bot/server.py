@@ -5,6 +5,8 @@ from os import environ
 import logging
 from valet_parking_slack_bot.logic import ParkingSpotDesignator
 from valet_parking_slack_bot.repo import ParkingSpotRepoStub
+from slack_bolt import App as BoltApp
+from slack_bolt.adapter.flask import SlackRequestHandler
 
 from logging.config import dictConfig
 
@@ -29,29 +31,34 @@ dictConfig(logging_config)
 
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
+app = BoltApp(signing_secret=environ.get("SIGNING_SECRET"),
+              token=environ.get("SLACK_BOT_TOKEN"))
+
+flask_app = Flask(__name__)
+handler = SlackRequestHandler(app)
 repo = ParkingSpotRepoStub()
 designator = ParkingSpotDesignator(repo)
 user = 'test_user'
 
-@app.route('/omw', methods=['POST'])
-def omw():
+@app.command('/omw')
+def omw(ack, respond, context):
     #TODO translate UIDs to display names
-    data = request.form
-    user_id, team_id = data['user_id'], data['team_id']
+    ack()
+    user_id, team_id = context['user_id'], context['team_id']
     logger.info(f'Received omw request from {user_id} at {team_id}')
-    return designator.try_reserve_spot(data['user_name'])
+    respond(designator.try_reserve_spot(context['user_id']))
 
-@app.route('/release', methods=['POST'])
-def release():
+@app.command('/release')
+def release(ack, respond):
     #TODO extract 'user' field from payload
-    return designator.release_by_username(user)
+    ack()
+    respond(designator.release_by_username(user))
 
-@app.route('/spots', methods=['POST'])
+@app.command('/spots')
 def spots():
     return designator.spots()
 
-@app.route('/test/healthcheck', methods=['GET'])
+@flask_app.route('/test/healthcheck', methods=['GET'])
 def healthcheck():
     response = {
             "message": "I'm alive!", 
@@ -59,5 +66,9 @@ def healthcheck():
     }
     return response
 
+@flask_app.route("/slack/events", methods=["POST"])
+def slack_events():
+    return handler.handle(request)
+
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(environ.get("PORT", 5000)))
+    flask_app.run(debug=True, host="0.0.0.0", port=int(environ.get("PORT", 5000)))
