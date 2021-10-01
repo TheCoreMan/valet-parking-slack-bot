@@ -67,15 +67,12 @@ def healthcheck():
     }
     return response
 
-# required in order to verify server ownership by Slack Event API
-@flask_app.route('/', methods=['POST'])
-def slack_challenge():
-    data = request.get_json()
-    return data['challenge']
-            
 
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
+    data = request.get_json()
+    if data['type'] == 'url_verification':
+        return data['challenge']
     return handler.handle(request)
 
 if __name__ == "__main__":
