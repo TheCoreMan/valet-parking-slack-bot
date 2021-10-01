@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask
-from flask import request
+from flask import request, Response
 from os import environ
 import logging
 from valet_parking_slack_bot.logic import ParkingSpotDesignator
@@ -40,7 +40,7 @@ repo = ParkingSpotRepoStub()
 designator = ParkingSpotDesignator(repo)
 user = 'test_user'
 
-@app.command('/omw')
+@app.message(':omw:')
 def omw(ack, respond, context, client):
     #TODO translate UIDs to display names
     ack()
@@ -66,6 +66,13 @@ def healthcheck():
             "ts": str(datetime.now())
     }
     return response
+
+# required in order to verify server ownership by Slack Event API
+@flask_app.route('/', methods=['POST'])
+def slack_challenge():
+    data = request.get_json()
+    return data['challenge']
+            
 
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
