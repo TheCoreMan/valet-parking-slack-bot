@@ -42,22 +42,23 @@ user = 'test_user'
 
 @app.message('omw')
 def omw(ack, say, context, client):
-    #TODO translate UIDs to display names
     ack()
     user_id, team_id = context['user_id'], context['team_id']
     info = client.users_info(user=user_id)
     logger.info(f'Received omw request from {info} at {team_id}')
     say(designator.try_reserve_spot(info['user']['real_name']))
 
-@app.command('/release')
-def release(ack, respond):
+@app.message('release')
+def release(ack, say, context):
     #TODO extract 'user' field from payload
     ack()
-    respond(designator.release_by_username(user))
+    user_id, team_id = context['user_id'], context['team_id']
+    say(designator.release_by_username(user_id))
 
-@app.command('/spots')
-def spots():
-    return designator.spots()
+@app.message('spots')
+def spots(ack, say):
+    ack()
+    say(designator.spots())
 
 @flask_app.route('/test/healthcheck', methods=['GET'])
 def healthcheck():
