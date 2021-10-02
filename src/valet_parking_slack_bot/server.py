@@ -40,14 +40,14 @@ repo = ParkingSpotRepoStub()
 designator = ParkingSpotDesignator(repo)
 user = 'test_user'
 
-@app.message(':omw:')
-def omw(ack, respond, context, client):
+@app.message('omw')
+def omw(ack, say, context, client):
     #TODO translate UIDs to display names
     ack()
     user_id, team_id = context['user_id'], context['team_id']
     info = client.users_info(user=user_id)
     logger.info(f'Received omw request from {info} at {team_id}')
-    respond(designator.try_reserve_spot(info['user']['real_name']))
+    say(designator.try_reserve_spot(info['user']['real_name']))
 
 @app.command('/release')
 def release(ack, respond):
