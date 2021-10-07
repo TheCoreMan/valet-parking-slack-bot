@@ -14,7 +14,7 @@ def test_reserve_spot_sanity():
     return_value = designator.try_reserve_spot(test_username)
 
     # assert (then)
-    assert return_value == f"Success, {test_username}! You may park at spot 1"
+    assert return_value == 1
     repo.retrieve_available_spots.assert_called_once()
     repo.assign.assert_called_once_with(test_username, 1)
 
@@ -25,21 +25,21 @@ class TestReleaseByUsername:
         repo.retrieve_spots_by_user.return_value = '1'
         designator = ParkingSpotDesignator(repo)
 
-        return_value = designator.release_by_username(test_username)
-        assert return_value == "Parking spot 1 has been released successfully"
+        return_value = designator.release_by_user_id(test_username)
+        assert return_value == '1'
 
     def test_no_reserved_spots(self):
         repo = create_autospec(ParkingSpotRepoBase)
         repo.retrieve_spots_by_user.return_value = ''
         designator = ParkingSpotDesignator(repo)
 
-        return_value = designator.release_by_username(test_username)
-        assert return_value == "User had no assigned parking"
+        return_value = designator.release_by_user_id(test_username)
+        assert return_value == ''
 
     def test_two_reserved_spots(self):
         repo = create_autospec(ParkingSpotRepoBase)
         repo.retrieve_spots_by_user.return_value = '1 2'
         designator = ParkingSpotDesignator(repo)
 
-        return_value = designator.release_by_username(test_username)
-        assert return_value == "You have several reserved spots: 1 2. Which one to release?"
+        return_value = designator.release_by_user_id(test_username)
+        assert return_value == '1 2'
