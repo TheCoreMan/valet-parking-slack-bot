@@ -3,31 +3,24 @@ from flask import Flask
 from flask import request
 from os import environ
 import logging
+from pathlib import Path
 from valet_parking_slack_bot.logic import ParkingSpotDesignator
 from valet_parking_slack_bot.repo import ParkingSpotRepoStub
 from slack_bolt import App as BoltApp
 from slack_bolt.adapter.flask import SlackRequestHandler
+import json
 
 from logging.config import dictConfig
 
-logging_config = dict(
-    version = 1,
-    formatters = {
-        'f': {'format':
-              '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'}
-        },
-    handlers = {
-        'h': {'class': 'logging.StreamHandler',
-              'formatter': 'f',
-              'level': logging.DEBUG}
-        },
-    root = {
-        'handlers': ['h'],
-        'level': logging.DEBUG,
-        },
-)
+def init_config():
+    path_to_logging_config = Path(".") / "config" / "logging_config.json"
+    assert path_to_logging_config.exists(), f"The JSON file doesn't exist! expected at {path_to_logging_config.absolute()}"
+    logging_config={}
+    with open(path_to_logging_config, 'r') as config_file:
+        logging_config = json.load(config_file)
+    dictConfig(logging_config)
 
-dictConfig(logging_config)
+init_config()
 
 logger = logging.getLogger(__name__)
 
