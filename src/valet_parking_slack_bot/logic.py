@@ -25,7 +25,6 @@ class ParkingSpotDesignator:
         else:
             return f"You have several reserved spots: {user_reserved_spots}. Which one to release?"
 
-    #TODO add user validation for releasing spots?
     def release_by_spot_id(self, spot_id):
         self.parking_spot_repo.release(spot_id)
         return f"Parking spot {spot_id} has been released successfully"

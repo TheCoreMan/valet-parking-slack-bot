@@ -38,11 +38,9 @@ flask_app = Flask(__name__)
 handler = SlackRequestHandler(app)
 repo = ParkingSpotRepoStub()
 designator = ParkingSpotDesignator(repo)
-user = 'test_user'
 
 @app.command('/omw')
 def omw(ack, respond, context, client):
-    #TODO translate UIDs to display names
     ack()
     user_id, team_id = context['user_id'], context['team_id']
     info = client.users_info(user=user_id)
@@ -51,7 +49,6 @@ def omw(ack, respond, context, client):
 
 @app.command('/release')
 def release(ack, respond):
-    #TODO extract 'user' field from payload
     ack()
     respond(designator.release_by_username(user))
 
