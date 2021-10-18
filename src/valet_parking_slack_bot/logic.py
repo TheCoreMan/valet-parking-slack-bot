@@ -1,4 +1,5 @@
 import logging
+from typing import List, Any
 logger = logging.getLogger(__name__)
 class ParkingSpotDesignator:
     def __init__(self, parking_spot_repo) -> None:
@@ -23,7 +24,8 @@ class ParkingSpotDesignator:
         if len(user_reserved_spots) == 1:
             self.parking_spot_repo.release(user_reserved_spots[0])
             logger.info(f'Attempting to release spot {user_reserved_spots[0]}')
-        logger.info(f'User {user_id} has several reserved spots: {user_reserved_spots}')
+        else:
+            logger.info(f'User {user_id} has several reserved spots: {user_reserved_spots}')
         return user_reserved_spots
 
     def release_by_spot_id(self, spot_id):

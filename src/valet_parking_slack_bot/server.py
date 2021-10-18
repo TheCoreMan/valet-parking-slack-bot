@@ -46,7 +46,6 @@ def omw(ack, say, context, client):
 
 @app.message('release')
 def release(ack, say, context, client):
-    #TODO extract 'user' field from payload
     ack()
     user_id, team_id = context['user_id'], context['team_id']
     info = client.users_info(user=user_id)
