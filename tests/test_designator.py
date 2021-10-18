@@ -14,7 +14,7 @@ def test_reserve_spot_sanity():
     return_value = designator.try_reserve_spot(test_username)
 
     # assert (then)
-    assert return_value
+    assert return_value == f"Success, {test_username}! You may park at spot 1"
     repo.retrieve_available_spots.assert_called_once()
     repo.assign.assert_called_once_with(test_username, 1)
 

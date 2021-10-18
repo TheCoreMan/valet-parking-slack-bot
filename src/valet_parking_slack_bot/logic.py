@@ -3,14 +3,17 @@ class ParkingSpotDesignator:
     def __init__(self, parking_spot_repo) -> None:
         self.parking_spot_repo = parking_spot_repo
 
+    def spots(self):
+        number_of_spots = len(self.parking_spot_repo.retrieve_available_spots())
+        return f"There are {number_of_spots} spots available"
 
     def try_reserve_spot(self, username):
         available_spots = self.parking_spot_repo.retrieve_available_spots()
         if len(available_spots) == 0:
-            return False
+            return "There are no spots available"
         else:
             self.parking_spot_repo.assign(username, available_spots[0])
-            return True
+            return f"Success, {username}! You may park at spot {available_spots[0]}"
 
     def release_by_username(self, username):
         user_reserved_spots = self.parking_spot_repo.retrieve_spots_by_user(username)
@@ -22,7 +25,6 @@ class ParkingSpotDesignator:
         else:
             return f"You have several reserved spots: {user_reserved_spots}. Which one to release?"
 
-    #TODO add user validation for releasing spots?
     def release_by_spot_id(self, spot_id):
         self.parking_spot_repo.release(spot_id)
         return f"Parking spot {spot_id} has been released successfully"

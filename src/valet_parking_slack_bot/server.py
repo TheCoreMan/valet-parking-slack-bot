@@ -2,21 +2,54 @@ from datetime import datetime
 from flask import Flask
 from flask import request
 from os import environ
+import logging
+from pathlib import Path
+from valet_parking_slack_bot.logic import ParkingSpotDesignator
+from valet_parking_slack_bot.repo import ParkingSpotRepoStub
+from slack_bolt import App as BoltApp
+from slack_bolt.adapter.flask import SlackRequestHandler
+import json
 
-app = Flask(__name__)
+from logging.config import dictConfig
 
+def init_config():
+    path_to_logging_config = Path(".") / "config" / "logging_config.json"
+    assert path_to_logging_config.exists(), f"The JSON file doesn't exist! expected at {path_to_logging_config.absolute()}"
+    logging_config={}
+    with open(path_to_logging_config, 'r') as config_file:
+        logging_config = json.load(config_file)
+    dictConfig(logging_config)
 
-@app.route('/spots', methods=['GET', 'POST'])
+init_config()
+
+logger = logging.getLogger(__name__)
+
+app = BoltApp(signing_secret=environ.get("SIGNING_SECRET"),
+              token=environ.get("SLACK_BOT_TOKEN"))
+
+flask_app = Flask(__name__)
+handler = SlackRequestHandler(app)
+repo = ParkingSpotRepoStub()
+designator = ParkingSpotDesignator(repo)
+
+@app.command('/omw')
+def omw(ack, respond, context, client):
+    ack()
+    user_id, team_id = context['user_id'], context['team_id']
+    info = client.users_info(user=user_id)
+    logger.info(f'Received omw request from {info} at {team_id}')
+    respond(designator.try_reserve_spot(info['user']['real_name']))
+
+@app.command('/release')
+def release(ack, respond):
+    ack()
+    respond(designator.release_by_username('test_user'))
+
+@app.command('/spots')
 def spots():
-    if request.method == 'POST':
-        return "dedede"
-    else:
-        return check_available_spots()
+    return designator.spots()
 
-def check_available_spots():
-    return "no spots for you!"
-
-@app.route('/test/healthcheck', methods=['GET'])
+@flask_app.route('/test/healthcheck', methods=['GET'])
 def healthcheck():
     response = {
             "message": "I'm alive!", 
@@ -24,5 +57,9 @@ def healthcheck():
     }
     return response
 
+@flask_app.route("/slack/events", methods=["POST"])
+def slack_events():
+    return handler.handle(request)
+
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(environ.get("PORT", 5000)))
+    flask_app.run(debug=True, host="0.0.0.0", port=int(environ.get("PORT", 5000)))
