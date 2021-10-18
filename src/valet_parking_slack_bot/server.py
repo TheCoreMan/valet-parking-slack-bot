@@ -43,7 +43,7 @@ def omw(ack, respond, context, client):
 @app.command('/release')
 def release(ack, respond):
     ack()
-    respond(designator.release_by_username(user))
+    respond(designator.release_by_username('test_user'))
 
 @app.command('/spots')
 def spots():
