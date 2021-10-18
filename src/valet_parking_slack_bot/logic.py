@@ -9,8 +9,8 @@ class ParkingSpotDesignator:
         return number_of_spots
 
     def try_reserve_spot(self, user_id):
-        available_spots = self.parking_spot_repo.retrieve_available_spots()
-        if len(available_spots) == 0:
+        available_spots: List[Any] = self.parking_spot_repo.retrieve_available_spots()
+        if not available_spots:
             logger.info(f'No spots available for {user_id}')
             return None
         else:
