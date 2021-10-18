@@ -39,4 +39,3 @@ class ParkingSpotRepoStub(ParkingSpotRepoBase):
 
     def release(self, spot_id):
         logger.info(f"releasing spot {spot_id}")
-

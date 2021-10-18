@@ -26,7 +26,6 @@ class ParkingSpotDesignator:
         logger.info(f'User {user_id} has several reserved spots: {user_reserved_spots}')
         return user_reserved_spots
 
-    #TODO add user validation for releasing spots?
     def release_by_spot_id(self, spot_id):
         self.parking_spot_repo.release(spot_id)
         return f"Parking spot {spot_id} has been released successfully"
