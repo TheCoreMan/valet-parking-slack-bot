@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask
-from flask import request
+from flask import request, Response
 from os import environ
 import logging
 from pathlib import Path
@@ -32,22 +32,38 @@ handler = SlackRequestHandler(app)
 repo = ParkingSpotRepoStub()
 designator = ParkingSpotDesignator(repo)
 
-@app.command('/omw')
-def omw(ack, respond, context, client):
+@app.message('omw')
+def omw(ack, say, context, client):
     ack()
     user_id, team_id = context['user_id'], context['team_id']
     info = client.users_info(user=user_id)
     logger.info(f'Received omw request from {info} at {team_id}')
-    respond(designator.try_reserve_spot(info['user']['real_name']))
+    assigned_spot = designator.try_reserve_spot(user_id)
+    response_message = "There are no spots available" \
+                       if assigned_spot is None \
+                       else f"Success, {info['user']['real_name']}! You may park at spot {assigned_spot}" 
+    say(response_message)
 
-@app.command('/release')
-def release(ack, respond):
+@app.message('release')
+def release(ack, say, context, client):
     ack()
-    respond(designator.release_by_username('test_user'))
+    user_id, team_id = context['user_id'], context['team_id']
+    info = client.users_info(user=user_id)
+    logger.info(f'Received release request from {info} at {team_id}')
+    user_reserved_spots = designator.release_by_user_id(user_id)
+    if len(user_reserved_spots) == 0:
+        response_message = "User had no assigned parking"
+    elif len(user_reserved_spots) == 1:
+        response_message = f"Parking spot {user_reserved_spots[0]} has been released successfully"
+    else:
+        response_message = f"You have several reserved spots: {user_reserved_spots}. Which one to release?"
+    say(response_message)
 
-@app.command('/spots')
-def spots():
-    return designator.spots()
+@app.message('spots')
+def spots(ack, say):
+    ack()
+    number_of_spots = designator.spots()
+    say(f"There are {number_of_spots} spots available")
 
 @flask_app.route('/test/healthcheck', methods=['GET'])
 def healthcheck():
@@ -57,8 +73,12 @@ def healthcheck():
     }
     return response
 
+
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
+    data = request.get_json()
+    if data['type'] == 'url_verification':
+        return data['challenge']
     return handler.handle(request)
 
 if __name__ == "__main__":
