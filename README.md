@@ -43,6 +43,8 @@ To run the tests, simply use pytest!
 pytest .
 ```
 
+You can use `--runcloud` to not skip some tests.
+
 ## Dockerizing
 
 ### Building a Docker image
