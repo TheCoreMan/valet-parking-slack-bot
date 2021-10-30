@@ -10,7 +10,7 @@ class DbCase(enum.Enum):
 def get_session_for_case(case: DbCase):
     if case == DbCase.inmem_testing:
         engine = create_engine('sqlite://')
-        session = Session(engine)
+        session = Session(bind=engine)
         return session
     elif case == DbCase.docker_testing:
         raise NotImplementedError("Docker session not implemented yet.")
