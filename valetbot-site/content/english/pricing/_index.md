@@ -13,11 +13,11 @@ basic:
   info : "Try it out!"
   services:
   - "You get everything the bot can do."
-  - "Up to 5 parking spots."
+  - "Up to 5 parking spots in 1 garage."
   button:
     enable : true
     label : "Get started for free"
-    link : "#"
+    link : "/docs/installation"
     
 business:
   name : "Paid Plan"
@@ -26,11 +26,13 @@ business:
   info : "Auto-manage your parking spots."
   services:
   - "You get everything the bot can do."
-  - "No limitations!"
+  - "Unlimited spots and garages."
+  - " - "
+  - "Coming soon!"
   button:
-    enable : true
+    enable : false
     label : "Proceed to payment"
-    link : "#"
+    link : "/pricing"
 
 call_to_action:
   enable : true

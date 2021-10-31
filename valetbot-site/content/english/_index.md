@@ -9,7 +9,7 @@ banner:
     enable : true
     label : "Add the Slack App to your Workspace"
     icon : '<i class="fab fa-slack"></i>'
-    link : "#"
+    link : "/docs/installation"
 
 ##################### Feature ##########################
 feature:
@@ -130,5 +130,5 @@ call_to_action:
     enable : true
     label : "Add to Slack"
     icon : '<i class="fab fa-slack"></i>'
-    link : "#"
+    link : "/docs/installation"
 ---

@@ -1,5 +1,5 @@
 ######################## default configuration ####################
-baseURL = "http://examplesite.org/"
+baseURL = "https://slackvaletbot.web.app/"
 title = "ValetBot"
 theme = "bigspring-hugo-instance"
 # post pagination

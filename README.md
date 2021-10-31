@@ -75,3 +75,13 @@ gcloud run deploy --port 5000
 *The port is specified because Cloud Run defaults to apps listening on 8080, and since we have port 5000 defined in the server app and the dockerfile, the default Cloud Run value needs to be overridden.*
 
 *As of now the app is unreachable due to permission issues. We'll fix that in the next edition of "Olga's adventures in getting back to work"*.
+
+## Site
+
+The site is built using Hugo and hosted using Firebase.
+
+To run locally for writing, run `hugo server -D`.
+
+To run locally for hosting emulation, run `firebase emulators:start`.
+
+To build and deploy, run `hugo && firebase deploy`.
