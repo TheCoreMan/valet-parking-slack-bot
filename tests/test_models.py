@@ -108,7 +108,7 @@ def session_with_demo_models(request):
 
 @pytest.mark.usefixtures("session_with_demo_models")
 class TestAllModelsTogether:
-    def test_all_models_sanity(self, session_with_demo_models):
+    def test_selecting_reservations(self, session_with_demo_models):
         result = session_with_demo_models.execute(
             select(Reservation).where(
                 Reservation.date == DEMO_RESERVATION_DATE
@@ -125,4 +125,9 @@ class TestAllModelsTogether:
         assert len(reservations) == 2
         logger.info(repr(reservations))
 
+    def test_reservation_relationships(self, session_with_demo_models: Session):
+        a_single_reservation = session_with_demo_models.execute(
+            select(Reservation)
+        ).scalars().first()
 
+        assert a_single_reservation.spot.garage.workspace.slack_id == DEMO_WORKSPACE_SLACK_ID
