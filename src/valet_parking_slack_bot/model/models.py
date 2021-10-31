@@ -3,7 +3,8 @@ from sqlalchemy.orm import registry, relationship, Session
 from sqlalchemy import (
     Boolean, 
     Column, 
-    DateTime, 
+    Date,
+    DateTime,
     Enum, 
     ForeignKey, 
     Integer, 
@@ -84,11 +85,23 @@ class Garage(Base):
     def __repr__(self):
         return f"Garage {self.name} at {repr(self.workspace)}"
 
+class SpotAttributes(enum.Enum):
+    accessible = enum.auto()
+    charger = enum.auto()
+    scooter = enum.auto()
+    wide = enum.auto()
+
 
 class Spot(Base):
     __tablename__ = TABLE_NAME_SPOTS
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    # TODO: Figure out how to set up attributes correctly. Array data type 
+    # isn't support in basic SQL (like sqlite), so that's not a good solution.
+    # options include:
+    # - Adding a SpotAttributes table
+    # - JSON list
+    # - "bitwise"/"flags" based on enum value
     attributes = Column(String, nullable=True)
     
     # Spot <-[n..1]-- garage
@@ -111,20 +124,13 @@ class Spot(Base):
         return f"Spot {self.name} at {self.garage}"
 
 
-# TODO use this somehow?
-#class SpotAttributes(enum.Enum):
-#    accessible = enum.auto()
-#    charger = enum.auto()
-#    scooter = enum.auto()
-#    wide = enum.auto()
-
 class User(Base):
     __tablename__ = TABLE_NAME_USERS
     id = Column(Integer, primary_key=True)
     slack_id = Column(String)
     name = Column(String)
     # Which garage to give this user by default? The ID of the garage.
-    default_garage = Column(String, nullable=True)
+    default_garage = Column(Integer, nullable=True)
     spot_preferences = Column(String)
     spot_requirements = Column(String)
 
@@ -142,10 +148,10 @@ class User(Base):
 class Reservation(Base):
     __tablename__ = TABLE_NAME_RESERVATIONS
     id = Column(Integer, primary_key=True)
-    date = Column(DateTime, nullable=False)
+    date = Column(Date, nullable=False)
     active = Column(Boolean, nullable=False)
     member_id = Column(String, nullable=False)
-    member_name = Column(String)
+    member_name = Column(String, nullable=True)
     
     # Reservation -[1]--[n]-> spot (multiple reservations can be made for the 
     # same spot, on different dates).
@@ -166,4 +172,7 @@ by {self.member_id} \
 for {self.date} spot {repr(self.spot)}"
 
 def create_all_tables(session: Session):
+    """Creates all the required tables in the DB, in case it's un-initialized.
+    
+    Safe to run if tables already exist."""
     Base.metadata.create_all(session.get_bind())

@@ -7,7 +7,7 @@ class DbCase(enum.Enum):
     docker_testing = enum.auto()
     prod = enum.auto()
 
-def get_session_for_case(case: DbCase):
+def get_session_for_case(case: DbCase) -> Session:
     if case == DbCase.inmem_testing:
         engine = create_engine('sqlite://')
         session = Session(bind=engine)

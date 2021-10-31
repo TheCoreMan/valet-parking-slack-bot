@@ -4,7 +4,7 @@ import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from datetime import datetime
+from datetime import datetime, date
 from valet_parking_slack_bot.model.db_factory import (
         get_session_for_case,
         DbCase,
@@ -34,6 +34,11 @@ def test_db_session(db_case: DbCase):
     assert expected == result.all()[0][0]
 
 
+def test_running_create_all_tables_twice_is_safe():
+    session: Session = get_session_for_case(DbCase.inmem_testing)
+    create_all_tables(session)
+    create_all_tables(session)
+
 def test_workspace_model_sanity():
     session: Session = get_session_for_case(DbCase.inmem_testing)
     create_all_tables(session)
@@ -57,7 +62,7 @@ def test_workspace_model_sanity():
 DEMO_WORKSPACE_NAME = "NiceFam"
 DEMO_WORKSPACE_SLACK_ID = "T02CPGASL8Y"
 DEMO_MEMBER_ID = "U02C63W148L"
-DEMO_RESERVATION_DATE = datetime(1994, 10, 19)
+DEMO_RESERVATION_DATE = date(1994, 10, 19)
 
 @pytest.fixture(scope="class")
 def session_with_demo_models(request):
