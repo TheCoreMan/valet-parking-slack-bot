@@ -9,6 +9,7 @@ from valet_parking_slack_bot.repo import ParkingSpotRepoStub
 from slack_bolt import App as BoltApp
 from slack_bolt.adapter.flask import SlackRequestHandler
 import json
+from uuid import uuid4
 
 from logging.config import dictConfig
 
@@ -65,6 +66,19 @@ def spots(ack, say):
     number_of_spots = designator.spots()
     say(f"There are {number_of_spots} spots available")
 
+
+@app.command('/suggestion')
+def feedback(ack, say, context, client, command):
+    ack()
+    logger.debug(context)
+    user_id = context['user_id']
+    user_name = client.users_info(user=user_id)['user']['real_name']
+    feedback = command['text']
+    feedback_uuid = uuid4().hex
+    logger.info(f'Feedback {feedback_uuid} from {user_name}: {feedback}')
+    say(f'Thanks for your input, {user_name}! It has been logged under `{feedback_uuid}`. Visit our <https://github.com/TheCoreMan/valet-parking-slack-bot|GitHub> to follow up on feature requests, feel free to contribute!')
+
+
 @flask_app.route('/test/healthcheck', methods=['GET'])
 def healthcheck():
     response = {
@@ -77,7 +91,7 @@ def healthcheck():
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
     data = request.get_json()
-    if data['type'] == 'url_verification':
+    if data is not None and data['type'] == 'url_verification':
         return data['challenge']
     return handler.handle(request)
 
