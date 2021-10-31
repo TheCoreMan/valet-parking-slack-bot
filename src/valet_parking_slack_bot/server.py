@@ -56,7 +56,7 @@ def release(ack, say, context, client):
     elif len(user_reserved_spots) == 1:
         response_message = f"Parking spot {user_reserved_spots[0]} has been released successfully"
     else:
-        response_message = f"You have several reserved spots: {user_reserved_spots}. Which one to release?"
+        response_message = f"You have several reserved spots: {user_reserved_spots}. Releasing such reservations is not possible in the current version of the app."
     say(response_message)
 
 @app.message('spots')

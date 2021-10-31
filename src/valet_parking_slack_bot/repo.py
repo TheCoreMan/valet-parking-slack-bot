@@ -32,7 +32,7 @@ class ParkingSpotRepoStub(ParkingSpotRepoBase):
     
     def retrieve_spots_by_user(self, username):
         logger.info(f"retriving spots for {username}")
-        return random.choices(self.spots_db, k=2)
+        return random.choices(self.spots_db, k=1)
 
     def assign(self, username, spot_id):
         logger.info(f"assign spot {spot_id} to {username}")
