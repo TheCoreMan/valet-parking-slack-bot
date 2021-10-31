@@ -2,6 +2,8 @@
 
 🔑 Right this way, sir. 🅿
 
+[Check out our homepage](https://slackvaletbot.web.app/)!
+
 ## Development Setup
 
 (If you just want to run the app, see the Docker section.)
