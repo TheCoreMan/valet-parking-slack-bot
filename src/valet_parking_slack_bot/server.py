@@ -9,6 +9,7 @@ from valet_parking_slack_bot.repo import ParkingSpotRepoStub
 from slack_bolt import App as BoltApp
 from slack_bolt.adapter.flask import SlackRequestHandler
 import json
+from uuid import uuid4
 
 from logging.config import dictConfig
 
@@ -73,8 +74,9 @@ def feedback(ack, say, context, client, command):
     user_id = context['user_id']
     user_name = client.users_info(user=user_id)['user']['real_name']
     feedback = command['text']
-    logger.info(f'Feedback from {user_name}: {feedback}')
-    say(f'Thanks for your input, {user_name}!')
+    feedback_uuid = uuid4().hex
+    logger.info(f'Feedback {feedback_uuid} from {user_name}: {feedback}')
+    say(f'Thanks for your input, {user_name}! It has been logged under `{feedback_uuid}`. Visit our <https://github.com/TheCoreMan/valet-parking-slack-bot|GitHub> to follow up on feature requests, feel free to contribute!')
 
 
 @flask_app.route('/test/healthcheck', methods=['GET'])
