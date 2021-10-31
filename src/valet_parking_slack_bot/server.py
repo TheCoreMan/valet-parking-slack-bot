@@ -65,6 +65,18 @@ def spots(ack, say):
     number_of_spots = designator.spots()
     say(f"There are {number_of_spots} spots available")
 
+
+@app.command('/suggestion')
+def feedback(ack, say, context, client, command):
+    ack()
+    logger.debug(context)
+    user_id = context['user_id']
+    user_name = client.users_info(user=user_id)['user']['real_name']
+    feedback = command['text']
+    logger.info(f'Feedback from {user_name}: {feedback}')
+    say(f'Thanks for your input, {user_name}!')
+
+
 @flask_app.route('/test/healthcheck', methods=['GET'])
 def healthcheck():
     response = {
@@ -77,7 +89,7 @@ def healthcheck():
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
     data = request.get_json()
-    if data['type'] == 'url_verification':
+    if data is not None and data['type'] == 'url_verification':
         return data['challenge']
     return handler.handle(request)
 
