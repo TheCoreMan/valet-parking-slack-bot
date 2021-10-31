@@ -1,0 +1,3 @@
+[submodule "valetbot-site/themes/bigspring-hugo-instance"]
+	path = valetbot-site/themes/bigspring-hugo-instance
+	url = git@github.com:TheCoreMan/bigspring-hugo-instance.git

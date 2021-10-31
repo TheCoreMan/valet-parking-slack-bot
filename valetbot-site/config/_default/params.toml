@@ -1,0 +1,42 @@
+#################### default parameters ################################
+logo = "images/parking.png"
+logo_width = "200px"
+# OpenGraph / Twitter Card metadata
+description = "ValueBot - Park with Slack"
+author = "Nehmad Software Inc."
+image = "images/parking.png" # this image will be used as fallback if a page has no image of its own
+# contact form action
+contact_form_action = "#" # contact form works with https://formspree.io
+
+# Type of pages to be rendered with a blog view
+blogCategoryType = "category"
+
+# Preloader
+[preloader]
+enable = true
+preloader = "images/preloader.gif" # use jpg, png, svg or gif format.
+
+# Navigation buttons
+[navigation_button]
+enable = true
+label = 'Add to Slack'
+icon = '<i class="fab fa-slack"/>'
+link = "#"
+
+# cookies
+[cookies]
+enable = false
+expire_days = 2
+content = "This site uses cookies. By continuing to use this website, you agree to their use."
+button = "I Accept"
+  
+############################# social site ########################
+[[social]]
+title = "github"
+icon = "fab fa-github" # themify icon : https://themify.me/themify-icons
+link = "https://github.com/TheCoreMan/valet-parking-slack-bot"
+
+[[social]]
+title = "twitter"
+icon = "fab fa-twitter" # themify icon : https://themify.me/themify-icons
+link = "https://twitter.com/ShayNehmad"
