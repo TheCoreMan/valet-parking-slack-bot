@@ -1,6 +1,5 @@
 from datetime import datetime
-from flask import Flask
-from flask import request, Response
+from flask import Flask, request, Response, make_response
 from os import environ
 import logging
 from pathlib import Path
@@ -88,11 +87,16 @@ def healthcheck():
     return response
 
 
-@flask_app.route("/slack/events", methods=["POST"])
+@flask_app.route("/", methods=["POST"])
 def slack_events():
-    data = request.get_json()
-    if data is not None and data['type'] == 'url_verification':
-        return data['challenge']
+    request_json = request.get_json()
+    if request_json is not None and request_json['type'] == 'url_verification':
+        logger.info(f"Got a challenge for URL verification from Slack. {request_json=}")
+        response = make_response(
+                    {"challenge": request_json.get("challenge")}, 200,
+                    {"content_type": "application/json"}
+                )
+        return response
     return handler.handle(request)
 
 if __name__ == "__main__":
