@@ -27,11 +27,23 @@ poetry install
 
 ## Running the app locally
 
+You need to install ngrok.
+
+[Follow this guide](https://slack.dev/node-slack-sdk/tutorials/local-development) to get started.
+
+First, run the ngrok server and copy the `Forwarding` URL.
+
+```sh
+ngrok http 3000
+```
+
+Go to [Slack Event Subscriptions](https://api.slack.com/apps/A02C0AD0U59/event-subscriptions?) and change the URL to the Forwarding URL.
 
 Configure flask app name as env variable and run flask app.
 
 ```sh
-ENV FLASK_APP="valet_parking_slack_bot.server.py"
+export FLASK_APP="valet_parking_slack_bot.server.py"
+export SLACK_BOT_TOKEN=<copy the token from https://api.slack.com/apps/A02C0AD0U59/install-on-team?>
 flask run
 ```
 
@@ -42,6 +54,8 @@ To run the tests, simply use pytest!
 ```sh
 pytest .
 ```
+
+You can use `--runcloud` to not skip some tests.
 
 ## Dockerizing
 

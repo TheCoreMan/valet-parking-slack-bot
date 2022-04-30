@@ -1,10 +1,12 @@
 import requests
 import logging
+import pytest
 
 logger = logging.getLogger(__name__)
 
 service_cloud_url = "https://valet-parking-slack-bot-n2mj5hiwyq-lz.a.run.app" 
 
+@pytest.mark.cloud
 def test_cloud_endpoint():
     test_url = f"{service_cloud_url}/test/healthcheck"
 

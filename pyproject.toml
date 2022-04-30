@@ -10,6 +10,7 @@ python = "^3.9"
 slack-bolt = "^1.9.1"
 Flask = "^2.0.1"
 requests = "^2.26.0"
+SQLAlchemy = "^1.4.25"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
